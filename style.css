@@ -273,69 +273,64 @@ footer h2 { color: white; }
 .copyright { color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: 20px; }
 
 /* ==========================================================================
-   CSS Infinite Scrolling Logo Carousel
+   Flexible Logo Grid
    ========================================================================== */
-.logo-carousel {
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-    padding: 40px 0;
-    width: 100%;
+
+.logo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 30px 0;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Apply gradient fade to edges for a smoother look (Optional) */
-.logo-carousel::before,
-.logo-carousel::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    width: 100px;
-    height: 100%;
-    z-index: 2;
-}
-.logo-carousel::before {
-    left: 0;
-    background: linear-gradient(to right, var(--dominant-color) 0%, transparent 100%);
-}
-.logo-carousel::after {
-    right: 0;
-    background: linear-gradient(to left, var(--dominant-color) 0%, transparent 100%);
-}
-
-.logo-track {
-    display: inline-flex;
-    gap: 40px; /* Space between logos */
-    animation: scroll-left 30s linear infinite;
-}
-
-.logo-item {
+.logo-card {
     background-color: var(--accent-1);
-    padding: 30px 40px;
+    padding: 20px;
     border-radius: 8px;
-    color: var(--text-muted);
-    font-weight: bold;
+    
+    /* 
+       flex: [grow] [shrink] [basis]
+       - Grow (1): Allows cards to expand into available empty space.
+       - Shrink (1): Allows cards to shrink on smaller screens.
+       - Basis (140px): Ideal starting width before growing/shrinking.
+    */
+    flex: 1 1 180px;
+    
+    /* Set bounds so logos scale fluidly between 130px and 220px */
+    min-width: 160px;
+    max-width: 280px;
+    
+    /* Fluid height scaling based on viewport width */
+    height: clamp(100px, 12vw, 140px);
+    
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 150px;
 }
 
-.logo-item img {
-    max-width: 120px; /* Limits the width of the logos */
-    max-height: 80px; /* Limits the height of the logos */
-    object-fit: contain; /* Ensures the logo isn't stretched or squished */
-    display: block;
+.logo-card img {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+    transition: transform 0.2s ease; /* Optional: smooth resize transition */
 }
 
-/* Pause scroll on hover */
-.logo-carousel:hover .logo-track {
-    animation-play-state: paused;
-}
-
-@keyframes scroll-left {
-    0% { transform: translateX(0); }
-    /* Moves exactly half the width of the track (which is 1 set of the 11 logos) */
-    100% { transform: translateX(calc(-50% - 20px)); } 
+/* Mobile responsiveness override for small screens */
+@media (max-width: 480px) {
+    .logo-grid {
+        gap: 10px;
+    }
+    .logo-card {
+        flex: 1 1 90px;
+        min-width: 90px;
+        max-width: 140px;
+        height: 65px;
+        padding: 10px;
+    }
 }
 
 /* ==========================================================================
